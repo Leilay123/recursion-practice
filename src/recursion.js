@@ -114,8 +114,25 @@ if (n < 0){
 // Example:  range(2, 9);  // [3, 4, 5, 6, 7, 8]
 var range = function(x, y) {
   // base
+  if (Math.abs(y - x) <= 1){
+    return []
+  }
   //recursion
+  if (x < y){ // increase order
+    return [x + 1].concat(range(x + 1, y))
+
+  } else { // decreanse
+    return [x - 1].concat(range(x - 1, y))
+  }
+
 };
+
+/**
+ *  range (2,9)
+ *  Base - false
+ *  3
+ * 
+ */
 
 // 7. Compute the exponent of a number.
 // The exponent of a number says how many times the base number is used as a factor.
