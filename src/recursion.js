@@ -26,7 +26,7 @@ return factorial(n -1, output)
 
 // 2. Compute the sum of an array of integers.
 // Example:  sum([1, 2, 3, 4, 5, 6]);  // 21
-var sum = function(array) {
+var sum = function(array, output=0) {
   // base
 
   // im assuming that if array.legnth === 0, return yea
@@ -34,7 +34,7 @@ var sum = function(array) {
     return 0
   }
   // recursion
-  return Number(array[0] + (sum(array.slice(1))))
+  return array[0] + sum(array.slice(1));
 };
 //array[0] + array[1] + array[2]...
 // so .slice(0)
@@ -78,59 +78,68 @@ var isEven = function(n) {
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
-var sumBelow = function(n) {
+var sumBelow = function(n, output=0) {
 // 1 + 2 + 3 + 4... = 45
-
-  // base
-/* if (n === 0){
-  return 0
-}
-
-  //recursion
-if (n < 0){
-  return (n - 1) + sumBelow(n - 1)
-} else if (n > 0){
-  return  (n + 1) + sumBelow(n + 1)
-}
-
-  // should retyrb a number
-  */
 
   //base
 
-  n = Math.floor(n);
+  if (n === 0){
+    return output
+  }
   
-  if (n === 0) return 0;
+  
 // recsurion
+
+  // If n is positive
   if (n > 0) {
     return (n - 1) + sumBelow(n - 1);
-  } else {
+  }
+
+  // If n is negative
+  if (n < 0) {
     return (n + 1) + sumBelow(n + 1);
   }
+return ;
 
 };
 
 // 6. Get the integers in range (x, y).
 // Example:  range(2, 9);  // [3, 4, 5, 6, 7, 8]
-var range = function(x, y) {
-  // base
-  if (Math.abs(y - x) <= 1){
+var range = function(x, y, output =[]) {
+  // if no intergers, return []
+  /* if (y - x < 1){
     return []
   }
-  //recursion
-  if (x < y){ // increase order
-    return [x + 1].concat(range(x + 1, y))
-
-  } else { // decreanse
-    return [x - 1].concat(range(x - 1, y))
+  */
+  // base
+  if (y - x === 1 || x - y === 1 || x === y){
+    return output
   }
+  //recursion
+    // what this need to do when not hitting the base
+  if (x < y ){
+    output.push(x + 1)
+    
+    return range (x + 1, y, output)
 
+  } else { // if x if larger than y
+    output.push(x - 1)
+
+    return range(x - 1, y, output)
+  }
 };
 
 /**
- *  range (2,9)
+ *  range (1,4) // [2, 3]
  *  Base - false
- *  3
+ *  recursion
+ *    // [2]
+ *    // return range  (2, 4, [2])
+ *      // base - fasle
+ *      // recursion
+ *        // output.push(3)
+ *          // return range (3, [2, 3])
+ * 
  * 
  */
 
@@ -141,22 +150,84 @@ var range = function(x, y) {
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
   // base
+  if (exp === 0){
+    return 1
+  }
+
   //recursion
+    // base factor with exp exponent yay math :(
+    // base * number of expoents
+    // how to get to the number of expoents?
+
+    //oh geeze nagatibes
+    if (exp < 0){
+      return 1 / exponent(base, -exp)
+    }
+
+    return base * exponent(base, exp - 1)
+
 };
 
 // 8. Determine if a number is a power of two.
 // powerOfTwo(1); // true
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
+
+//I HATE MATH OGMGGG :D I DON'T REMEMVER ANYTHING FROMSCHOOL
+// A number is a power of two if the number can be created if 2 ????
+// x=2n whatever this means
 var powerOfTwo = function(n) {
+ //base
+ if (n <= 0){
+  return false
+ }
+
+ // recursuion
+ if (n === 1) {
+  return true
+};
+  // so basically if N can be diviled by 2 an *insert number of times*
+  if(n % 2 === 0){
+    return powerOfTwo(n / 2)
+  }
+  return false
 };
 
 // 9. Write a function that accepts a string a reverses it.
-var reverse = function(string) {
+var reverse = function(string, output="") {
+  //so basically reverse a string
+
+    // base
+    if(string.length === 0){
+      return output
+    }
+
+    // recursuion
+
+    output = string[0] += output
+
+    return reverse(string.slice(1), output)
+
 };
 
 // 10. Write a function that determines if a string is a palindrome.
-var palindrome = function(string) {
+
+//whats a palindrome???
+//literally never heard of that before
+// so basilly a word/phase that be forwards and backwards
+var palindrome = function(string, reversedstr="") {
+
+
+// base
+if (string.length <= 1){
+  return true
+}
+//recursions
+  // so bascally I need to reverse str and check if that reversed matcg??
+  // I guess
+
+  // I should reverse thing string
+
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -171,7 +242,21 @@ var modulo = function(x, y) {
 // 12. Write a function that multiplies two numbers without using the * operator  or
 // JavaScript's Math object.
 // ATTENTION DO NOT LEAVE COMMENTS IN THIS FUNCTION. The test is looking for any ('/').
+
+// 2 * 4 = 8 === 2 + 2 + 2 + 2 = 8
 var multiply = function(x, y) {
+// base
+ if (y === 0){
+  return 0
+}
+
+//recursion
+  // need to add x and y amount of times
+  if(y > 0){
+    return x + multiply(x, y - 1)
+  }
+return -multiply(x, -y)
+
 };
 
 // 13. Write a function that divides two numbers without using the / operator  or
@@ -194,6 +279,9 @@ var gcd = function(x, y) {
 // compareStr('', '') // true
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+  //base
+
+  //recursion
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
